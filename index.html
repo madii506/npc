@@ -172,20 +172,45 @@ body.in .hero{animation-delay:0s} body.in .r .pn:nth-child(1){animation-delay:.1
 .ctrls{grid-template-columns:auto 1fr;font-size:18px}
 .ctrls dt{font:10px var(--px);color:var(--ink);border:1px solid var(--line2);padding:4px 6px;text-align:center;background:var(--panel2);align-self:start}
 .ctrls dd{text-align:left;color:var(--ink2,#bfc3cc)}
+
+/* --- more life --- */
+.stage:before{animation:floor 5s linear infinite}
+@keyframes floor{to{background-position:0 36px,0 0}}
+#emb{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.pop{position:absolute;font:11px var(--px);color:#fff;text-shadow:2px 2px 0 #000;z-index:3;pointer-events:none;animation:pop 1.7s ease-out forwards;white-space:nowrap}
+.pop.g{color:var(--hp)} .pop.r{color:var(--red)}
+@keyframes pop{0%{opacity:0;transform:translate(-50%,10px) scale(.7)}15%{opacity:1;transform:translate(-50%,0) scale(1.1)}100%{opacity:0;transform:translate(-50%,-70px) scale(1)}}
+.pn{transition:transform .25s ease,box-shadow .25s ease}
+.pn:hover{transform:translateY(-2px);box-shadow:inset 0 0 0 1px #0b0c0f,0 0 0 1px #2a3b31,0 14px 34px rgba(0,0,0,.45),0 0 24px rgba(61,220,132,.08)}
+.stat i b{width:0;transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
+body.in .q li.done:before{animation:tick .5s cubic-bezier(.2,.9,.3,1.4) both}
+body.in .q li:nth-child(1).done:before{animation-delay:.6s} body.in .q li:nth-child(2).done:before{animation-delay:.9s} body.in .q li:nth-child(3).done:before{animation-delay:1.2s}
+@keyframes tick{0%{transform:scale(.4);color:var(--ink)}60%{transform:scale(1.4)}100%{transform:scale(1)}}
+.car img{transition:opacity .3s ease,transform .3s ease}
+.car img.sw{opacity:0;transform:scale(1.03)}
+.wide .pn{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+.wide .pn.vis{opacity:1;transform:none}
+.nav a{position:relative}
+.nav a:after{content:"";position:absolute;left:0;right:100%;bottom:-2px;height:2px;background:var(--hp);transition:right .25s ease}
+.nav a.on{color:var(--ink)} .nav a.on:after{right:0}
+.bar i{background-image:linear-gradient(90deg,var(--hp) 0 60%,#8ff0bb 80%,var(--hp) 100%);background-size:200% 100%;animation:barsh 2.4s linear infinite}
+@keyframes barsh{to{background-position:-200% 0}}
+.cabar code:after{content:"▮";margin-left:6px;animation:bl .9s steps(2) infinite}
+.big.cnt{animation:flash .6s steps(2)}
+@keyframes flash{50%{color:var(--hp)}}
+.tick .tk:hover{animation-play-state:paused}
+.stage .word:hover{animation:gl .12s steps(2) 4}
 </style>
 </head>
 <body class="gated">
 <canvas id="rain"></canvas>
 <div id="gate" aria-live="polite">
   <div class="gscan"></div>
-  <div class="gtop"><span>SPAWN · ROBINHOOD CHAIN</span><span id="gpct">0%</span></div>
   <div class="gw" data-t="NPC">NPC</div>
-  <div class="gs">PAIRED TO $SPY</div>
   <div class="gstage"><canvas id="gc"></canvas><div class="gfloor"></div></div>
   <div class="lb"><i id="gbar"></i></div>
   <ul class="glog" id="glog"></ul>
   <button class="enter" id="enter">ENTER</button>
-  <div class="hint">press E</div>
 </div>
 <nav class="nav"><div class="in"><a href="#spawn">spawn</a><a href="#desk">desk</a><a href="#lore">lore</a><a href="#memes">memes</a><a href="#cam">cam</a><a href="#buy">how to buy</a><span id="navr" style="display:contents"></span><button id="snd" aria-pressed="false">sound</button></div></nav>
 <div class="tick"><div class="tk" id="tk"></div></div>
@@ -194,11 +219,11 @@ body.in .hero{animation-delay:0s} body.in .r .pn:nth-child(1){animation-delay:.1
   <aside class="l">
     <section class="pn" id="stats"><h3>STATS</h3><div class="b"><dl><dt>MCAP</dt><dd class="z" id="s-mcap">---</dd><dt>LIQ</dt><dd class="z" id="s-liq">---</dd><dt>PRICE</dt><dd class="z" id="s-price">---</dd><dt>HOLDERS</dt><dd class="z" id="s-holders">---</dd><dt>$SPY</dt><dd id="s-spy" class="z">---</dd><dt>PAYDAY</dt><dd id="s-pay" class="z">---</dd></dl><div class="note" style="margin-top:10px" id="s-note">reads from the chain after launch.</div></div></section>
     <section class="pn" id="rpg"><h3>NPC STATS</h3><div class="b">
-      <div class="stat"><span>INT</span><i><b style="width:50%"></b></i><span>50</span></div>
-      <div class="stat"><span>PATIENCE</span><i><b style="width:99%"></b></i><span>99</span></div>
-      <div class="stat"><span>OPINIONS</span><i><b style="width:0%"></b></i><span>0</span></div>
-      <div class="stat"><span>NEWS READ</span><i><b style="width:0%"></b></i><span>0</span></div>
-      <div class="stat"><span>HOLD</span><i><b style="width:100%"></b></i><span>∞</span></div></div></section>
+      <div class="stat"><span>INT</span><i><b data-w="50"></b></i><span>50</span></div>
+      <div class="stat"><span>PATIENCE</span><i><b data-w="99"></b></i><span>99</span></div>
+      <div class="stat"><span>OPINIONS</span><i><b data-w="0"></b></i><span>0</span></div>
+      <div class="stat"><span>NEWS READ</span><i><b data-w="0"></b></i><span>0</span></div>
+      <div class="stat"><span>HOLD</span><i><b data-w="100"></b></i><span>∞</span></div></div></section>
     <section class="pn" id="quests"><h3>QUEST LOG</h3><div class="b"><ul class="q">
       <li class="done">spawn</li><li class="done">buy the index</li><li class="done">stand still</li><li>collect payday <span class="note">(every other friday, $SPY)</span></li><li class="never">read the news</li><li class="never">sell</li></ul></div></section>
     <section class="pn" id="lore"><h3>THE LORE</h3><div class="b">
@@ -216,7 +241,7 @@ body.in .hero{animation-delay:0s} body.in .r .pn:nth-child(1){animation-delay:.1
   </aside>
 
   <section class="pn hero" id="spawn"><h3>SPAWN POINT <span class="live">● LIVE</span></h3>
-    <div class="stage" id="stage"><div class="word">NPC</div><div class="sub">PAIRED TO $SPY</div><div class="tag" id="tag">idle · 0 thoughts</div><canvas id="c3"></canvas><canvas id="fire" width="200" height="60"></canvas><i class="spark" style="left:12%;top:32%"></i><i class="spark" style="left:84%;top:26%;animation-delay:1s"></i><i class="spark" style="left:70%;top:60%;animation-delay:1.8s"></i><i class="spark" style="left:22%;top:66%;animation-delay:.6s"></i></div>
+    <div class="stage" id="stage"><div class="word">NPC</div><div class="sub">PAIRED TO $SPY</div><div class="tag" id="tag">idle · 0 thoughts</div><canvas id="c3"></canvas><canvas id="fire" width="200" height="60"></canvas><canvas id="emb"></canvas><i class="spark" style="left:12%;top:32%"></i><i class="spark" style="left:84%;top:26%;animation-delay:1s"></i><i class="spark" style="left:70%;top:60%;animation-delay:1.8s"></i><i class="spark" style="left:22%;top:66%;animation-delay:.6s"></i></div>
     <div class="btns" id="btns"><button class="btn" id="talk">TALK [E]</button><button class="btn" id="glitch">POKE</button></div>
     <div class="dlg"><b>NPC</b><span id="dlg"></span><i class="cur">▮</i></div>
   </section>
@@ -282,7 +307,7 @@ const N=createNPC($('c3'),{dpr:window.innerWidth<600?1:1.5,frame:'full'});
 window.addEventListener('resize',()=>{ N.resize(); });
 $('c3').addEventListener('pointermove',e=>{ const r=e.currentTarget.getBoundingClientRect(); N.lookAt(((e.clientX-r.left)/r.width-.5)*1.2, ((e.clientY-r.top)/r.height-.5)*.7); });
 let thoughts=0, glitches=0;
-function poke(){ N.glitch(); FIRE.burst(); const cv=document.querySelector('.camv'); cv.classList.remove('tear'); void cv.offsetWidth; cv.classList.add('tear'); glitches++; $('stage').classList.remove('glitch'); void $('stage').offsetWidth; $('stage').classList.add('glitch'); say('…'); SFX.glitch(); setTimeout(()=>{ say(LINES[Math.floor(Math.random()*LINES.length)]); },900); $('tag').textContent='glitched · '+glitches; }
+function poke(){ pop('ow','r'); N.glitch(); FIRE.burst(); const cv=document.querySelector('.camv'); cv.classList.remove('tear'); void cv.offsetWidth; cv.classList.add('tear'); glitches++; $('stage').classList.remove('glitch'); void $('stage').offsetWidth; $('stage').classList.add('glitch'); say('…'); SFX.glitch(); setTimeout(()=>{ say(LINES[Math.floor(Math.random()*LINES.length)]); },900); $('tag').textContent='glitched · '+glitches; }
 $('glitch').addEventListener('click',poke);
 setInterval(()=>{ if(Math.random()<.35) poke(); }, 30000);
 
@@ -290,13 +315,14 @@ setInterval(()=>{ if(Math.random()<.35) poke(); }, 30000);
 const hh=()=>new Date().toISOString().slice(11,16);
 let dlgT=null, li=0;
 function say(t){ if(t!=='…'){ const li=document.createElement('li'); li.innerHTML='<i>'+hh()+'</i><span>'+t+'</span>'; $('dl').prepend(li); while($('dl').children.length>6) $('dl').lastChild.remove(); } const el=$('dlg'); clearInterval(dlgT); el.textContent=''; let i=0; dlgT=setInterval(()=>{ el.textContent=t.slice(0,++i); if(i%3===0) SFX.blip(); if(i>=t.length) clearInterval(dlgT); },28); }
-function next(){ li=(li+1)%LINES.length; thoughts++; say(LINES[li]); $('tag').textContent='idle · '+thoughts+' thought'+(thoughts===1?'':'s'); }
+function next(){ pop('?'); li=(li+1)%LINES.length; thoughts++; say(LINES[li]); $('tag').textContent='idle · '+thoughts+' thought'+(thoughts===1?'':'s'); }
 $('talk').addEventListener('click',next); document.addEventListener('keydown',e=>{ if(document.body.classList.contains('gated')) return; const k=e.key.toLowerCase(); if(k==='e') next(); if(k==='p') poke(); if(k==='m') $('snd').click(); if(e.key==='ArrowRight') $('mnx').click(); if(e.key==='ArrowLeft') $('mpv').click(); });
 say(LINES[0]); setInterval(()=>{ if(document.visibilityState==='visible') next(); }, 9000);
 
 /* memes */
+const mimg=$('mimg'); mimg.addEventListener('load',()=>mimg.classList.remove('sw'));
 const MEMES=[['memes/m1.png','have you tried the index?'],['memes/m2.png','npc.exe has stopped responding. position unchanged.'],['memes/m3.png','i do not check the chart. the chart checks me.'],['memes/m4.png','i have been here since the game started.'],['memes/m5.png','the news is for players.'],['memes/m6.png','press E to buy.'],['memes/m7.png','gm. same as yesterday.'],['memes/m8.png','welcome back. nothing changed.'],['memes/m9.png','thinking… nothing found.'],['memes/m10.png','player detected. ignoring.'],['memes/m11.png','waiting for payday.'],['memes/m12.png','quest available: buy. reward: $SPY.']];
-let mi=0; function showMeme(){ $('mimg').src=MEMES[mi][0]; $('mcap').textContent=MEMES[mi][1]; $('mdots').innerHTML=MEMES.map((_,k)=>'<i class="'+(k===mi?'on':'')+'"></i>').join(''); }
+let mi=0; function showMeme(){ mimg.classList.add('sw'); $('mimg').src=MEMES[mi][0]; $('mcap').textContent=MEMES[mi][1]; $('mdots').innerHTML=MEMES.map((_,k)=>'<i class="'+(k===mi?'on':'')+'"></i>').join(''); }
 $('mpv').onclick=()=>{ mi=(mi+MEMES.length-1)%MEMES.length; showMeme(); }; $('mnx').onclick=()=>{ mi=(mi+1)%MEMES.length; showMeme(); }; showMeme(); setInterval(()=>{ mi=(mi+1)%MEMES.length; showMeme(); },6000);
 
 /* cam clock */
@@ -311,14 +337,15 @@ async function desk(){ try{ const r=await fetch('/api/spy',{cache:'no-store'}); 
   $('d-px').innerHTML='$'+q.price.toFixed(2)+(chg==null?'':'<small class="'+(chg>=0?'up':'dn')+'">'+(chg>=0?'+':'')+chg.toFixed(2)+'%</small>');
   const when=new Date(q.time); const open=/REGULAR/.test(q.marketState||''); $('d-when').textContent=(open?'market open':'last close')+' · '+fd(q.time)+' '+when.toISOString().slice(11,16)+' UTC · delayed · looks again in 5 min'; $('d-live').textContent='live'; $('d-live').className='up'; $('s-spy').textContent='$'+q.price.toFixed(2); $('s-spy').classList.remove('z');
   const S=q.series||[]; if(S.length>20){ let inv=0, sh=0, n=0; for(let i=0;i<S.length;i+=2){ inv+=100; sh+=100/S[i].a; n++; } const last=S[S.length-1]; const val=sh*last.a; const pct=(val/inv-1)*100;
-    $('d-kv').innerHTML='<span>put in</span><span>'+money(inv)+'</span><span>worth now</span><span class="up">'+money(val)+'</span><span>result</span><span class="'+(pct>=0?'up':'dn')+'">'+(pct>=0?'+':'')+pct.toFixed(0)+'%</span><span>times it bought</span><span>'+n+'</span><span>times it checked the news</span><span>0</span>';
+    $('d-kv').innerHTML='<span>put in</span><span id="cu1">'+money(inv)+'</span><span>worth now</span><span class="up" id="cu2">'+money(val)+'</span><span>result</span><span class="'+(pct>=0?'up':'dn')+'">'+(pct>=0?'+':'')+pct.toFixed(0)+'%</span><span>times it bought</span><span>'+n+'</span><span>times it checked the news</span><span>0</span>';
     $('d-story').textContent='Every other Friday since '+fd(S[0].t)+' the NPC has put $100 into $SPY. It has never read the news. It has never sold. Dividends went straight back in.';
-    drawChart(S); $('d-range').textContent=fd(S[0].t)+' → '+fd(last.t)+' · weekly closes, dividends reinvested'; }
+    if(!window.__cu){ window.__cu=1; countUp($('cu1'),inv,money); countUp($('cu2'),val,money); revealChart(S); } else drawChart(S); $('d-range').textContent=fd(S[0].t)+' → '+fd(last.t)+' · weekly closes, dividends reinvested'; }
  }catch(e){ $('d-px').textContent='---'; $('d-when').textContent='no price right now. the NPC waits.'; $('d-live').textContent='waiting'; $('d-live').className='z'; } }
-function drawChart(S){ const c=$('chart'), x=c.getContext('2d'); const W=c.width,H=c.height; x.clearRect(0,0,W,H); const v=S.map(p=>p.a); const mn=Math.min(...v), mx=Math.max(...v); const X=i=>10+i*(W-20)/(S.length-1), Y=p=>H-14-((p-mn)/(mx-mn||1))*(H-40);
+function revealChart(S){ const t0=performance.now(); function f(){ const p=Math.min(1,(performance.now()-t0)/1400); drawChart(S, Math.max(2,Math.floor(S.length*p))); if(p<1) requestAnimationFrame(f); } f(); }
+function drawChart(S,upto){ const FULL=S; S=upto?S.slice(0,upto):S; const c=$('chart'), x=c.getContext('2d'); const W=c.width,H=c.height; x.clearRect(0,0,W,H); const v=FULL.map(p=>p.a); const mn=Math.min(...v), mx=Math.max(...v); const X=i=>10+i*(W-20)/(FULL.length-1), Y=p=>H-14-((p-mn)/(mx-mn||1))*(H-40);
   x.strokeStyle='#2a2e38'; x.lineWidth=1; [.25,.5,.75].forEach(f=>{ x.beginPath(); x.moveTo(10,H-14-f*(H-40)); x.lineTo(W-10,H-14-f*(H-40)); x.stroke(); });
   x.strokeStyle='#3ddc84'; x.lineWidth=2.5; x.beginPath(); S.forEach((p,i)=>{ i?x.lineTo(X(i),Y(p.a)):x.moveTo(X(i),Y(p.a)); }); x.stroke();
-  x.fillStyle='#3ddc84'; x.beginPath(); x.arc(X(S.length-1),Y(v[v.length-1]),5,0,7); x.fill();
+  x.fillStyle='#3ddc84'; x.beginPath(); x.arc(X(S.length-1),Y(S[S.length-1].a),5,0,7); x.fill();
   x.fillStyle='#8b909b'; x.font='16px VT,monospace'; x.fillText('$'+mn.toFixed(0),12,H-2); x.fillText('$'+mx.toFixed(0),12,22); }
 desk(); setInterval(desk,300000);
 /* payday: every other Friday 17:00 UTC from 18 Sep 2026 */
@@ -335,15 +362,15 @@ $('snd').addEventListener('click',()=>{ on=!on; $('snd').setAttribute('aria-pres
 
 /* gate / loader: the NPC spawns from a T-pose while the world loads */
 const G=createNPC($('gc'),{dpr:1,frame:'full'}); G.setPose('tpose'); G.setBreathe(false);
-const GATE=(function(){ const bar=$('gbar'), pct=$('gpct'), log=$('glog'), btn=$('enter');
+const GATE=(function(){ const bar=$('gbar'), log=$('glog'), btn=$('enter');
   const steps=[[.02,'connecting to robinhood chain','ok'],[.14,'loading npc.obj','1 of 1'],[.30,'loading the index','$SPY'],[.44,'loading opinions','none found',1],[.56,'loading news','skipped',1],[.68,'loading strategy','buy. wait. repeat.'],[.80,'assigning spawn point','ok'],[.92,'waking npc','…']];
   const t0=performance.now(); let si=0, ready=false; const DUR=3400;
   function add(a,b,w){ const li=document.createElement('li'); li.innerHTML='<span>'+a+'…</span><b>'+b+'</b>'; if(w) li.className='warn'; log.appendChild(li); while(log.children.length>5) log.firstChild.remove(); }
-  function step(){ const p=Math.min(1,(performance.now()-t0)/DUR); const e=p<.85?p*.92:.78+(p-.85)/.15*.22; bar.style.width=(e*100).toFixed(1)+'%'; pct.textContent=Math.round(e*100)+'%';
+  function step(){ const p=Math.min(1,(performance.now()-t0)/DUR); const e=p<.85?p*.92:.78+(p-.85)/.15*.22; bar.style.width=(e*100).toFixed(1)+'%';
     while(si<steps.length && p>=steps[si][0]){ add(steps[si][1],steps[si][2],steps[si][3]); si++; }
     if(p<1) requestAnimationFrame(step); else { ready=true; G.setPose('idle'); G.setBreathe(true); $('gate').classList.add('flash'); add('npc ready','press ENTER'); btn.classList.add('on'); } }
   requestAnimationFrame(step);
-  function go(){ if(!ready||!document.body.classList.contains('gated')) return; $('gate').classList.add('out'); setTimeout(()=>{ try{ G.renderer.dispose(); G.renderer.forceContextLoss(); }catch(e){} $('gate').remove(); },700); document.body.classList.remove('gated'); document.body.classList.add('in'); N.resize(); try{ if(!on){ on=true; $('snd').setAttribute('aria-pressed','true'); $('snd').textContent='sound on'; startPad(); SFX.blip(); } }catch(e){} }
+  function go(){ if(!ready||!document.body.classList.contains('gated')) return; $('gate').classList.add('out'); setTimeout(()=>{ try{ G.renderer.dispose(); G.renderer.forceContextLoss(); }catch(e){} $('gate').remove(); },700); document.body.classList.remove('gated'); document.body.classList.add('in'); N.resize(); armStats(); setTimeout(()=>pop('spawned','g'),900); try{ if(!on){ on=true; $('snd').setAttribute('aria-pressed','true'); $('snd').textContent='sound on'; startPad(); SFX.blip(); } }catch(e){} }
   btn.addEventListener('click',go); return { go, get ready(){ return ready; } }; })();
 document.addEventListener('keydown',e=>{ if((e.key==='e'||e.key==='E'||e.key==='Enter') && document.body.classList.contains('gated')) GATE.go(); });
 
@@ -362,8 +389,26 @@ const FIRE=(function(){ const c=$('fire'), x=c.getContext('2d'); const W=c.width
   function render(dt){ acc+=dt; if(acc<1/24) return; acc=0; for(let xx=0;xx<W;xx++) for(let y=1;y<H;y++) spread(y*W+xx); const d=img.data; for(let i=0;i<W*H;i++){ const p=PAL[Math.min(36,buf[i])]; d[i*4]=p[0]; d[i*4+1]=p[1]; d[i*4+2]=p[2]; d[i*4+3]=p[3]; } x.putImageData(img,0,0); }
   return { render, burst(){ for(let i=0;i<W;i++) buf[(H-2)*W+i]=36; } }; })();
 
+
+/* embers over the fire */
+const EMB=(function(){ const c=$('emb'), x=c.getContext('2d'); const P=[]; for(let i=0;i<46;i++) P.push({x:Math.random(),y:Math.random(),v:.05+Math.random()*.12,s:1+Math.random()*2.5,f:Math.random()*6});
+  function size(){ const st=c.parentElement; c.width=st.clientWidth||600; c.height=st.clientHeight||400; } size(); window.addEventListener('resize',size);
+  function render(dt){ x.clearRect(0,0,c.width,c.height); for(const p of P){ p.y-=p.v*dt; p.x+=Math.sin(p.f+p.y*9)*.0006; p.f+=dt*3; if(p.y<0){ p.y=1.02; p.x=Math.random(); } const a=Math.max(0,Math.min(1,(1-p.y)*1.6))*(.35+.65*Math.abs(Math.sin(p.f))); x.fillStyle='rgba(61,220,132,'+(a*.85).toFixed(3)+')'; const sz=p.s*(window.innerWidth<600?1:1.6); x.fillRect(p.x*c.width, p.y*c.height, sz, sz); } }
+  return { render }; })();
+/* floating rpg text over the npc */
+const POPS=['+0 xp','held','still here','0 opinions','same as yesterday','+1 friday','did nothing','not selling','index +','no news'];
+function pop(t,cls){ const st=$('stage'); const el=document.createElement('div'); el.className='pop '+(cls||''); el.textContent=t; el.style.left=(44+Math.random()*12)+'%'; el.style.top=(22+Math.random()*14)+'%'; st.appendChild(el); setTimeout(()=>el.remove(),1800); }
+setInterval(()=>{ if(!document.body.classList.contains('gated') && document.visibilityState==='visible' && Math.random()<.75) pop(POPS[Math.floor(Math.random()*POPS.length)], Math.random()<.5?'g':''); }, 6500);
+/* stat bars + quest ticks after enter */
+function armStats(){ document.querySelectorAll('.stat i b[data-w]').forEach((b,i)=>{ setTimeout(()=>{ b.style.width=b.dataset.w+'%'; }, 400+i*160); }); }
+/* count-up */
+function countUp(el, to, fmt){ const t0=performance.now(), D=1100; el.classList.add('cnt'); function f(){ const p=Math.min(1,(performance.now()-t0)/D); const e=1-Math.pow(1-p,3); el.textContent=fmt(to*e); if(p<1) requestAnimationFrame(f); } f(); }
+/* scroll reveal + nav active */
+const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('vis'); }),{threshold:.12}); document.querySelectorAll('.wide .pn').forEach(el=>io.observe(el));
+const secs=['spawn','desk','lore','memes','cam','buy']; const nio=new IntersectionObserver(es=>{ es.forEach(e=>{ if(e.isIntersecting){ document.querySelectorAll('.nav a').forEach(a=>a.classList.toggle('on', a.getAttribute('href')==='#'+e.target.id)); } }); },{rootMargin:'-40% 0px -50% 0px'}); secs.forEach(id=>{ const el=$(id); if(el) nio.observe(el); });
+
 /* loop */
-let last=performance.now(); function loop(now){ requestAnimationFrame(loop); const dt=Math.min(.1,(now-last)/1000); last=now; if(document.visibilityState!=='visible') return; RAIN.render(dt); FIRE.render(dt); if(document.body.classList.contains('gated')){ G.render(dt); return; } N.render(dt); } requestAnimationFrame(loop);
+let last=performance.now(); function loop(now){ requestAnimationFrame(loop); const dt=Math.min(.1,(now-last)/1000); last=now; if(document.visibilityState!=='visible') return; RAIN.render(dt); FIRE.render(dt); if(document.body.classList.contains('gated')){ G.render(dt); return; } EMB.render(dt); N.render(dt); } requestAnimationFrame(loop);
 </script>
 </body>
 </html>
