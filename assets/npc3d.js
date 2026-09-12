@@ -64,7 +64,7 @@ export function createNPC(canvas, { dpr = 1.5, frame = 'full', bg = null } = {})
   const setPose = n => { cur = n; target = POSES[n] || POSES.idle; prop.visible = !!target.prop; };
   const lerpE = (obj, arr, k) => { obj.rotation.x += (arr[0] - obj.rotation.x) * k; obj.rotation.y += (arr[1] - obj.rotation.y) * k; obj.rotation.z += (arr[2] - obj.rotation.z) * k; };
   function frameCam(f) { frame = f; if (f === 'bust') { camera.position.set(0, 1.45, 7.4); camera.lookAt(0, 1.3, 0); } else if (f === 'close') { camera.position.set(0, 1.7, 4.4); camera.lookAt(0, 1.55, 0); } else { camera.position.set(0, .1, 12.6); camera.lookAt(0, -.2, 0); } }
-  function resize() { const w = canvas.clientWidth || 600, h = canvas.clientHeight || 600; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); frameCam(frame); }
+  function resize() { const w = canvas.clientWidth || 600, h = canvas.clientHeight || 600; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); frameCam(frame); if (frame === 'full' && camera.aspect < .9) { camera.position.z = 12.6 / Math.max(.55, camera.aspect); } }
   function glitch() { glitchT = .7; }
   function render(dt = .016) { t += dt;
     const P = glitchT > 0 ? POSES.tpose : target; if (glitchT > 0) glitchT -= dt;
