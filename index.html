@@ -29,13 +29,14 @@ a{color:var(--ink)}
 .tick .tk{display:inline-block;animation:tk 60s linear infinite;padding-left:0}
 .tick b{color:var(--ink);font-weight:400;margin:0 18px}
 @keyframes tk{to{transform:translateX(-50%)}}
-.dome{position:relative;z-index:1;max-width:1240px;margin:22px auto 0;padding:0 16px;display:grid;grid-template-columns:250px 1fr 290px;gap:14px;align-items:start}
+.dome{position:relative;z-index:1;max-width:1240px;margin:22px auto 0;padding:0 16px;display:grid;grid-template-columns:250px 1fr 290px;gap:14px;align-items:stretch}
 .pn{background:var(--panel);border:1px solid var(--line);box-shadow:inset 0 0 0 1px #0b0c0f,0 0 0 1px #1c1f27,0 12px 30px rgba(0,0,0,.35);padding:0 0 14px}
 .pn h3{margin:0 0 12px;font:10px var(--px);letter-spacing:1px;color:var(--ink);background:var(--panel2);border-bottom:1px solid var(--line);padding:11px 14px;display:flex;justify-content:space-between;align-items:center}
 .pn h3 .live{color:var(--red);font-size:8px;animation:bl 1.2s steps(2) infinite}
 @keyframes bl{50%{opacity:.25}}
 .pn .b{padding:0 14px}
-.l,.r{display:grid;gap:14px}
+.l,.r,.c{display:flex;flex-direction:column;gap:14px}
+.l>:last-child,.r>:last-child,.c>:last-child{flex:1}
 dl{margin:0;display:grid;grid-template-columns:1fr auto;gap:6px 12px}
 dt{color:var(--mute)} dd{margin:0;text-align:right;color:var(--hp)}
 .z{color:var(--mute)}
@@ -82,7 +83,7 @@ ol li b{display:block;color:var(--ink)}
 .big{font:36px var(--px);color:#fff;line-height:1.1;margin:4px 0 6px;word-break:break-all}
 .big small{font:12px var(--px);margin-left:10px}
 .up{color:var(--hp)} .dn{color:var(--red)}
-.desk canvas{display:block;width:100%;height:160px;margin-top:10px;background:#0d0e12;border:1px solid var(--line)}
+.desk canvas{display:block;width:100%;height:190px;margin-top:10px;background:#0d0e12;border:1px solid var(--line)}
 .kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:20px;margin-top:8px}
 .kv span:nth-child(odd){color:var(--mute)}
 .bar{height:10px;background:#0d0e12;border:1px solid var(--line2);margin:10px 0 4px;position:relative}
@@ -94,7 +95,7 @@ table.t td{padding:6px 0;border-bottom:1px solid var(--line)}
 .cabar .in{display:flex;align-items:center;gap:14px;background:var(--panel);border:1px solid var(--line);padding:12px 14px;font:11px var(--px);color:var(--mute)}
 .cabar code{font:20px var(--vt);color:var(--hp);flex:1;word-break:break-all}
 .cabar button{font:9px var(--px);background:var(--panel2);border:1px solid var(--line2);color:var(--ink);padding:8px 10px;cursor:pointer}
-@media (max-width:1040px){ .dome{grid-template-columns:1fr 1fr} .hero{grid-column:1/-1;order:-1} }
+@media (max-width:1040px){ .dome{grid-template-columns:1fr 1fr} .c{grid-column:1/-1;order:-1} }
 @media (max-width:640px){ .dome{grid-template-columns:1fr;margin-top:14px} .hero{min-height:0} .stage{min-height:340px} .stage .word{font-size:30px} .nav .in{gap:14px;font-size:9px} .dlg{font-size:19px} }
 
 /* gate / loader */
@@ -188,8 +189,6 @@ body.in .q li:nth-child(1).done:before{animation-delay:.6s} body.in .q li:nth-ch
 @keyframes tick{0%{transform:scale(.4);color:var(--ink)}60%{transform:scale(1.4)}100%{transform:scale(1)}}
 .car img{transition:opacity .3s ease,transform .3s ease}
 .car img.sw{opacity:0;transform:scale(1.03)}
-.wide .pn{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
-.wide .pn.vis{opacity:1;transform:none}
 .nav a{position:relative}
 .nav a:after{content:"";position:absolute;left:0;right:100%;bottom:-2px;height:2px;background:var(--hp);transition:right .25s ease}
 .nav a.on{color:var(--ink)} .nav a.on:after{right:0}
@@ -240,28 +239,13 @@ body.in .q li:nth-child(1).done:before{animation-delay:.6s} body.in .q li:nth-ch
       <li><b>5) Stand still</b>Payday is every other Friday. In $SPY.</li></ol></div></section>
   </aside>
 
+  <div class="c">
   <section class="pn hero" id="spawn"><h3>SPAWN POINT <span class="live">● LIVE</span></h3>
     <div class="stage" id="stage"><div class="word">NPC</div><div class="sub">PAIRED TO $SPY</div><div class="tag" id="tag">idle · 0 thoughts</div><canvas id="c3"></canvas><canvas id="fire" width="200" height="60"></canvas><canvas id="emb"></canvas><i class="spark" style="left:12%;top:32%"></i><i class="spark" style="left:84%;top:26%;animation-delay:1s"></i><i class="spark" style="left:70%;top:60%;animation-delay:1.8s"></i><i class="spark" style="left:22%;top:66%;animation-delay:.6s"></i></div>
     <div class="btns" id="btns"><button class="btn" id="talk">TALK [E]</button><button class="btn" id="glitch">POKE</button></div>
     <div class="dlg"><b>NPC</b><span id="dlg"></span><i class="cur">▮</i></div>
   </section>
-
-  <aside class="r">
-    <section class="pn" id="memes"><h3>NPC MEMES</h3><div class="car"><img id="mimg" alt=""><button class="pv" id="mpv">‹</button><button class="nx" id="mnx">›</button></div><div class="mcap" id="mcap"></div><div class="dots" id="mdots"></div></section>
-    <section class="pn" id="cam"><h3>NPC CAM <span class="live">● LIVE</span></h3><div class="camv"><video id="camvid" src="assets/cam.mp4" poster="assets/cam.jpg" autoplay muted loop playsinline></video><div class="noise"></div><div class="osd"><span class="rec">● REC</span><span id="osdt">--:--:--</span></div><div class="osd2" id="osd2">CAM 01 · SPAWN</div></div><div class="note b" style="padding-top:10px">he does not know it is on.</div></section>
-    <section class="pn" id="payday"><h3>PAYDAY</h3><div class="b"><div class="big" id="pay2" style="font-size:16px;line-height:1.4">---</div><div class="bar"><i id="paybar2" style="width:0%"></i></div><div class="note">70% of every trade fee, in $SPY, every other friday 17:00 UTC. NPC does not celebrate.</div></div></section>
-    <section class="pn" id="dlog"><h3>DIALOGUE LOG</h3><div class="b"><ol class="dl" id="dl"></ol></div></section>
-    <section class="pn" id="controls"><h3>CONTROLS</h3><div class="b"><dl class="ctrls"><dt>E</dt><dd>talk</dd><dt>P</dt><dd>poke</dd><dt>M</dt><dd>sound</dd><dt>← →</dt><dd>memes</dd><dt>mouse</dt><dd>he follows it. slowly.</dd></dl></div></section>
-    <section class="pn" id="patch"><h3>PATCH NOTES</h3><div class="b patch">
-      <p><b>v1.0</b> NPC added. Stands at spawn. Buys $SPY every other friday.</p>
-      <p><b>v1.1</b> NPC still there.</p>
-      <p><b>v1.2</b> Removed the ability to read the news. Nobody noticed.</p>
-      <p><b>v1.3</b> Fixed a bug where NPC almost had an opinion.</p>
-      <p><b>v1.4</b> Payday now in $SPY. NPC did not react.</p></div></section>
-  </aside>
-</main>
-
-<section class="wide"><div class="pn desk" id="desk"><h3>THE DESK · WHAT THE NPC DOES <span id="d-live" class="z">connecting</span></h3><div class="b">
+  <div class="pn desk" id="desk"><h3>THE DESK · WHAT THE NPC DOES <span id="d-live" class="z">connecting</span></h3><div class="b">
   <div>
     <div class="note">$SPY, the thing NPCs buy</div>
     <div class="big" id="d-px">---</div>
@@ -278,11 +262,27 @@ body.in .q li:nth-child(1).done:before{animation-delay:.6s} body.in .q li:nth-ch
     <div class="bar"><i id="paybar" style="width:0%"></i></div>
     <div class="note">70% of every trade fee, in $SPY, to holders every other Friday 17:00 UTC. Nothing collected yet; the coin is not launched.</div>
   </div>
-</div></div></section>
-
-<section class="wide"><div class="pn" id="token"><h3>TOKEN</h3><div class="b"><table class="t">
+</div></div>
+  <div class="pn" id="token"><h3>TOKEN</h3><div class="b"><table class="t">
   <tr><th>name</th><td>NPC</td></tr><tr><th>pair</th><td>$SPY, SPDR S&amp;P 500 stock token, Robinhood Chain</td></tr><tr><th>launchpad</th><td>Pons v2, bonding curve then Uniswap v4</td></tr><tr><th>fee</th><td>1% a trade · 70% to holders in $SPY every other Friday · 30% protocol</td></tr><tr><th>team wallet</th><td>none</td></tr><tr><th>contract</th><td id="ca2" class="z">not yet</td></tr><tr id="xrow" style="display:none"><th>x</th><td id="xcell"></td></tr>
-</table></div></div></section>
+</table></div></div>
+  </div>
+
+  <aside class="r">
+    <section class="pn" id="memes"><h3>NPC MEMES</h3><div class="car"><img id="mimg" alt=""><button class="pv" id="mpv">‹</button><button class="nx" id="mnx">›</button></div><div class="mcap" id="mcap"></div><div class="dots" id="mdots"></div></section>
+    <section class="pn" id="cam"><h3>NPC CAM <span class="live">● LIVE</span></h3><div class="camv"><video id="camvid" poster="assets/cam.jpg" autoplay muted loop playsinline><source src="assets/cam.webm" type="video/webm"><source src="assets/cam.mp4" type="video/mp4"></video><div class="noise"></div><div class="osd"><span class="rec">● REC</span><span id="osdt">--:--:--</span></div><div class="osd2" id="osd2">CAM 01 · SPAWN</div></div><div class="note b" style="padding-top:10px">he does not know it is on.</div></section>
+    <section class="pn" id="payday"><h3>PAYDAY</h3><div class="b"><div class="big" id="pay2" style="font-size:16px;line-height:1.4">---</div><div class="bar"><i id="paybar2" style="width:0%"></i></div><div class="note">70% of every trade fee, in $SPY, every other friday 17:00 UTC. NPC does not celebrate.</div></div></section>
+    <section class="pn" id="dlog"><h3>DIALOGUE LOG</h3><div class="b"><ol class="dl" id="dl"></ol></div></section>
+    <section class="pn" id="controls"><h3>CONTROLS</h3><div class="b"><dl class="ctrls"><dt>E</dt><dd>talk</dd><dt>P</dt><dd>poke</dd><dt>M</dt><dd>sound</dd><dt>← →</dt><dd>memes</dd><dt>mouse</dt><dd>he follows it. slowly.</dd></dl></div></section>
+    <section class="pn" id="patch"><h3>PATCH NOTES</h3><div class="b patch">
+      <p><b>v1.0</b> NPC added. Stands at spawn. Buys $SPY every other friday.</p>
+      <p><b>v1.1</b> NPC still there.</p>
+      <p><b>v1.2</b> Removed the ability to read the news. Nobody noticed.</p>
+      <p><b>v1.3</b> Fixed a bug where NPC almost had an opinion.</p>
+      <p><b>v1.4</b> Payday now in $SPY. NPC did not react.</p></div></section>
+  </aside>
+</main>
+
 
 <div class="cabar"><div class="in"><span>CA</span><code id="ca">not yet</code><button id="copyca">COPY</button></div></div>
 
@@ -404,7 +404,6 @@ function armStats(){ document.querySelectorAll('.stat i b[data-w]').forEach((b,i
 /* count-up */
 function countUp(el, to, fmt){ const t0=performance.now(), D=1100; el.classList.add('cnt'); function f(){ const p=Math.min(1,(performance.now()-t0)/D); const e=1-Math.pow(1-p,3); el.textContent=fmt(to*e); if(p<1) requestAnimationFrame(f); } f(); }
 /* scroll reveal + nav active */
-const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('vis'); }),{threshold:.12}); document.querySelectorAll('.wide .pn').forEach(el=>io.observe(el));
 const secs=['spawn','desk','lore','memes','cam','buy']; const nio=new IntersectionObserver(es=>{ es.forEach(e=>{ if(e.isIntersecting){ document.querySelectorAll('.nav a').forEach(a=>a.classList.toggle('on', a.getAttribute('href')==='#'+e.target.id)); } }); },{rootMargin:'-40% 0px -50% 0px'}); secs.forEach(id=>{ const el=$(id); if(el) nio.observe(el); });
 
 /* loop */
