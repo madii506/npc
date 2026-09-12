@@ -67,7 +67,11 @@ ol li b{display:block;color:var(--ink)}
 .dots{display:flex;gap:6px;justify-content:center;padding-top:6px}
 .dots i{width:6px;height:6px;background:var(--line2)} .dots i.on{background:var(--hp)}
 .camv{position:relative;aspect-ratio:4/3;background:#0a0b0e;overflow:hidden;border-bottom:1px solid var(--line)}
-.camv canvas{position:absolute;inset:0;width:100%;height:100%;display:block;filter:contrast(1.1) saturate(.6)}
+.camv video{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;filter:contrast(1.15) saturate(.5) brightness(.95)}
+.camv .noise{position:absolute;inset:-50%;background:url(assets/noise.png) repeat;opacity:.16;animation:nz .5s steps(4) infinite;pointer-events:none;mix-blend-mode:screen}
+@keyframes nz{0%{transform:translate(0,0)}25%{transform:translate(-4%,3%)}50%{transform:translate(3%,-5%)}75%{transform:translate(-2%,-2%)}100%{transform:translate(4%,4%)}}
+.camv.tear video{animation:tear .35s steps(3) 1}
+@keyframes tear{50%{transform:translateY(-6px) skewX(2deg);filter:contrast(1.6) brightness(1.3)}}
 .camv:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 2px,transparent 2px 4px);pointer-events:none}
 .camv .osd{position:absolute;left:10px;right:10px;top:8px;display:flex;justify-content:space-between;font:9px var(--px);color:#fff;text-shadow:1px 1px 0 #000;z-index:2}
 .camv .osd .rec{color:var(--red)}
@@ -136,7 +140,7 @@ body.gated #rain{opacity:.9}
 .btn{position:relative;overflow:hidden}
 .btn:after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 45%,rgba(255,255,255,.14) 50%,transparent 55%);background-size:300% 100%;animation:shine 5s linear infinite;pointer-events:none}
 /* materialize panels after enter */
-body.gated .dome,body.gated .wide,body.gated .cabar,body.gated .tick{visibility:hidden}
+body.gated .nav,body.gated .dome,body.gated .wide,body.gated .cabar,body.gated .tick{visibility:hidden}
 body.in .pn{animation:mat .55s cubic-bezier(.2,.8,.2,1) both}
 body.in .l .pn:nth-child(1){animation-delay:.05s} body.in .l .pn:nth-child(2){animation-delay:.15s} body.in .l .pn:nth-child(3){animation-delay:.25s} body.in .l .pn:nth-child(4){animation-delay:.35s} body.in .l .pn:nth-child(5){animation-delay:.45s}
 body.in .hero{animation-delay:0s} body.in .r .pn:nth-child(1){animation-delay:.1s} body.in .r .pn:nth-child(2){animation-delay:.2s} body.in .r .pn:nth-child(3){animation-delay:.3s}
@@ -162,6 +166,12 @@ body.in .hero{animation-delay:0s} body.in .r .pn:nth-child(1){animation-delay:.1
 .q li.never{color:var(--red)}
 .patch{font-size:18px;line-height:1.35}
 .patch b{color:var(--hp);font-weight:400}
+.dl{list-style:none;margin:0;padding:0;font-size:17px;max-height:150px;overflow:hidden}
+.dl li{display:grid;grid-template-columns:52px 1fr;gap:8px;padding:3px 0;border-bottom:1px dashed var(--line)}
+.dl li i{font-style:normal;color:var(--mute)}
+.ctrls{grid-template-columns:auto 1fr;font-size:18px}
+.ctrls dt{font:10px var(--px);color:var(--ink);border:1px solid var(--line2);padding:4px 6px;text-align:center;background:var(--panel2);align-self:start}
+.ctrls dd{text-align:left;color:var(--ink2,#bfc3cc)}
 </style>
 </head>
 <body class="gated">
@@ -177,12 +187,12 @@ body.in .hero{animation-delay:0s} body.in .r .pn:nth-child(1){animation-delay:.1
   <button class="enter" id="enter">ENTER</button>
   <div class="hint">press E</div>
 </div>
-<nav class="nav"><div class="in"><a class="brand" href="#top">NPC</a><a href="#spawn">spawn</a><a href="#desk">desk</a><a href="#lore">lore</a><a href="#memes">memes</a><a href="#cam">cam</a><a href="#buy">how to buy</a><span id="navr" style="display:contents"></span><button id="snd" aria-pressed="false">sound</button></div></nav>
+<nav class="nav"><div class="in"><a href="#spawn">spawn</a><a href="#desk">desk</a><a href="#lore">lore</a><a href="#memes">memes</a><a href="#cam">cam</a><a href="#buy">how to buy</a><span id="navr" style="display:contents"></span><button id="snd" aria-pressed="false">sound</button></div></nav>
 <div class="tick"><div class="tk" id="tk"></div></div>
 
 <main class="dome" id="top">
   <aside class="l">
-    <section class="pn" id="stats"><h3>STATS</h3><div class="b"><dl><dt>MCAP</dt><dd class="z" id="s-mcap">---</dd><dt>LIQ</dt><dd class="z" id="s-liq">---</dd><dt>PRICE</dt><dd class="z" id="s-price">---</dd><dt>HOLDERS</dt><dd class="z" id="s-holders">---</dd></dl><div class="note" style="margin-top:10px" id="s-note">reads from the chain after launch.</div></div></section>
+    <section class="pn" id="stats"><h3>STATS</h3><div class="b"><dl><dt>MCAP</dt><dd class="z" id="s-mcap">---</dd><dt>LIQ</dt><dd class="z" id="s-liq">---</dd><dt>PRICE</dt><dd class="z" id="s-price">---</dd><dt>HOLDERS</dt><dd class="z" id="s-holders">---</dd><dt>$SPY</dt><dd id="s-spy" class="z">---</dd><dt>PAYDAY</dt><dd id="s-pay" class="z">---</dd></dl><div class="note" style="margin-top:10px" id="s-note">reads from the chain after launch.</div></div></section>
     <section class="pn" id="rpg"><h3>NPC STATS</h3><div class="b">
       <div class="stat"><span>INT</span><i><b style="width:50%"></b></i><span>50</span></div>
       <div class="stat"><span>PATIENCE</span><i><b style="width:99%"></b></i><span>99</span></div>
@@ -213,7 +223,10 @@ body.in .hero{animation-delay:0s} body.in .r .pn:nth-child(1){animation-delay:.1
 
   <aside class="r">
     <section class="pn" id="memes"><h3>NPC MEMES</h3><div class="car"><img id="mimg" alt=""><button class="pv" id="mpv">‹</button><button class="nx" id="mnx">›</button></div><div class="mcap" id="mcap"></div><div class="dots" id="mdots"></div></section>
-    <section class="pn" id="cam"><h3>NPC CAM <span class="live">● LIVE</span></h3><div class="camv"><canvas id="c3b"></canvas><div class="osd"><span class="rec">● REC</span><span id="osdt">--:--:--</span></div><div class="osd2">CAM 01 · SPAWN</div></div><div class="note b" style="padding-top:10px">he does not know it is on.</div></section>
+    <section class="pn" id="cam"><h3>NPC CAM <span class="live">● LIVE</span></h3><div class="camv"><video id="camvid" src="assets/cam.mp4" poster="assets/cam.jpg" autoplay muted loop playsinline></video><div class="noise"></div><div class="osd"><span class="rec">● REC</span><span id="osdt">--:--:--</span></div><div class="osd2" id="osd2">CAM 01 · SPAWN</div></div><div class="note b" style="padding-top:10px">he does not know it is on.</div></section>
+    <section class="pn" id="payday"><h3>PAYDAY</h3><div class="b"><div class="big" id="pay2" style="font-size:16px;line-height:1.4">---</div><div class="bar"><i id="paybar2" style="width:0%"></i></div><div class="note">70% of every trade fee, in $SPY, every other friday 17:00 UTC. NPC does not celebrate.</div></div></section>
+    <section class="pn" id="dlog"><h3>DIALOGUE LOG</h3><div class="b"><ol class="dl" id="dl"></ol></div></section>
+    <section class="pn" id="controls"><h3>CONTROLS</h3><div class="b"><dl class="ctrls"><dt>E</dt><dd>talk</dd><dt>P</dt><dd>poke</dd><dt>M</dt><dd>sound</dd><dt>← →</dt><dd>memes</dd><dt>mouse</dt><dd>he follows it. slowly.</dd></dl></div></section>
     <section class="pn" id="patch"><h3>PATCH NOTES</h3><div class="b patch">
       <p><b>v1.0</b> NPC added. Stands at spawn. Buys $SPY every other friday.</p>
       <p><b>v1.1</b> NPC still there.</p>
@@ -266,19 +279,19 @@ $('tk').innerHTML=(LINES.map(l=>'<b>$NPC</b>'+l).join('')).repeat(2);
 
 /* 3D: hero + cam */
 const N=createNPC($('c3'),{dpr:window.innerWidth<600?1:1.5,frame:'full'});
-const C=createNPC($('c3b'),{dpr:1,frame:'bust'});
-window.addEventListener('resize',()=>{ N.resize(); C.resize(); });
+window.addEventListener('resize',()=>{ N.resize(); });
 $('c3').addEventListener('pointermove',e=>{ const r=e.currentTarget.getBoundingClientRect(); N.lookAt(((e.clientX-r.left)/r.width-.5)*1.2, ((e.clientY-r.top)/r.height-.5)*.7); });
 let thoughts=0, glitches=0;
-function poke(){ N.glitch(); C.glitch(); FIRE.burst(); glitches++; $('stage').classList.remove('glitch'); void $('stage').offsetWidth; $('stage').classList.add('glitch'); say('…'); SFX.glitch(); setTimeout(()=>{ say(LINES[Math.floor(Math.random()*LINES.length)]); },900); $('tag').textContent='glitched · '+glitches; }
+function poke(){ N.glitch(); FIRE.burst(); const cv=document.querySelector('.camv'); cv.classList.remove('tear'); void cv.offsetWidth; cv.classList.add('tear'); glitches++; $('stage').classList.remove('glitch'); void $('stage').offsetWidth; $('stage').classList.add('glitch'); say('…'); SFX.glitch(); setTimeout(()=>{ say(LINES[Math.floor(Math.random()*LINES.length)]); },900); $('tag').textContent='glitched · '+glitches; }
 $('glitch').addEventListener('click',poke);
 setInterval(()=>{ if(Math.random()<.35) poke(); }, 30000);
 
 /* dialogue */
+const hh=()=>new Date().toISOString().slice(11,16);
 let dlgT=null, li=0;
-function say(t){ const el=$('dlg'); clearInterval(dlgT); el.textContent=''; let i=0; dlgT=setInterval(()=>{ el.textContent=t.slice(0,++i); if(i%3===0) SFX.blip(); if(i>=t.length) clearInterval(dlgT); },28); }
+function say(t){ if(t!=='…'){ const li=document.createElement('li'); li.innerHTML='<i>'+hh()+'</i><span>'+t+'</span>'; $('dl').prepend(li); while($('dl').children.length>6) $('dl').lastChild.remove(); } const el=$('dlg'); clearInterval(dlgT); el.textContent=''; let i=0; dlgT=setInterval(()=>{ el.textContent=t.slice(0,++i); if(i%3===0) SFX.blip(); if(i>=t.length) clearInterval(dlgT); },28); }
 function next(){ li=(li+1)%LINES.length; thoughts++; say(LINES[li]); $('tag').textContent='idle · '+thoughts+' thought'+(thoughts===1?'':'s'); }
-$('talk').addEventListener('click',next); document.addEventListener('keydown',e=>{ if((e.key==='e'||e.key==='E') && !document.body.classList.contains('gated')) next(); });
+$('talk').addEventListener('click',next); document.addEventListener('keydown',e=>{ if(document.body.classList.contains('gated')) return; const k=e.key.toLowerCase(); if(k==='e') next(); if(k==='p') poke(); if(k==='m') $('snd').click(); if(e.key==='ArrowRight') $('mnx').click(); if(e.key==='ArrowLeft') $('mpv').click(); });
 say(LINES[0]); setInterval(()=>{ if(document.visibilityState==='visible') next(); }, 9000);
 
 /* memes */
@@ -288,6 +301,7 @@ $('mpv').onclick=()=>{ mi=(mi+MEMES.length-1)%MEMES.length; showMeme(); }; $('mn
 
 /* cam clock */
 setInterval(()=>{ const n=new Date(); $('osdt').textContent=n.toISOString().slice(11,19)+' UTC'; },1000);
+setInterval(()=>{ const v=$('camvid'); const t=v.currentTime||0; $('osd2').textContent=(t>6.3&&t<9.1?'CAM 01 · SPAWN · 1 notification':t>=9.1&&t<11.3?'CAM 01 · SPAWN · he noticed':'CAM 01 · SPAWN'); },500);
 
 /* desk: live $SPY + the routine */
 const fd=ms=>{ const d=new Date(ms); return d.getUTCDate()+' '+['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'][d.getUTCMonth()]+' '+d.getUTCFullYear(); };
@@ -295,7 +309,7 @@ const money=v=>'$'+v.toLocaleString('en-US',{maximumFractionDigits:0});
 async function desk(){ try{ const r=await fetch('/api/spy',{cache:'no-store'}); if(!r.ok) throw 0; const q=await r.json(); if(!q.price) throw 0;
   const chg=q.prevClose?((q.price/q.prevClose-1)*100):null;
   $('d-px').innerHTML='$'+q.price.toFixed(2)+(chg==null?'':'<small class="'+(chg>=0?'up':'dn')+'">'+(chg>=0?'+':'')+chg.toFixed(2)+'%</small>');
-  const when=new Date(q.time); const open=/REGULAR/.test(q.marketState||''); $('d-when').textContent=(open?'market open':'last close')+' · '+fd(q.time)+' '+when.toISOString().slice(11,16)+' UTC · delayed · looks again in 5 min'; $('d-live').textContent='live'; $('d-live').className='up';
+  const when=new Date(q.time); const open=/REGULAR/.test(q.marketState||''); $('d-when').textContent=(open?'market open':'last close')+' · '+fd(q.time)+' '+when.toISOString().slice(11,16)+' UTC · delayed · looks again in 5 min'; $('d-live').textContent='live'; $('d-live').className='up'; $('s-spy').textContent='$'+q.price.toFixed(2); $('s-spy').classList.remove('z');
   const S=q.series||[]; if(S.length>20){ let inv=0, sh=0, n=0; for(let i=0;i<S.length;i+=2){ inv+=100; sh+=100/S[i].a; n++; } const last=S[S.length-1]; const val=sh*last.a; const pct=(val/inv-1)*100;
     $('d-kv').innerHTML='<span>put in</span><span>'+money(inv)+'</span><span>worth now</span><span class="up">'+money(val)+'</span><span>result</span><span class="'+(pct>=0?'up':'dn')+'">'+(pct>=0?'+':'')+pct.toFixed(0)+'%</span><span>times it bought</span><span>'+n+'</span><span>times it checked the news</span><span>0</span>';
     $('d-story').textContent='Every other Friday since '+fd(S[0].t)+' the NPC has put $100 into $SPY. It has never read the news. It has never sold. Dividends went straight back in.';
@@ -308,7 +322,7 @@ function drawChart(S){ const c=$('chart'), x=c.getContext('2d'); const W=c.width
   x.fillStyle='#8b909b'; x.font='16px VT,monospace'; x.fillText('$'+mn.toFixed(0),12,H-2); x.fillText('$'+mx.toFixed(0),12,22); }
 desk(); setInterval(desk,300000);
 /* payday: every other Friday 17:00 UTC from 18 Sep 2026 */
-(function(){ const A=Date.UTC(2026,8,18,17,0,0), P=14*864e5; function t(){ const now=Date.now(); let n=A; if(now>A) n=A+Math.ceil((now-A)/P)*P; const ms=n-now; const d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4); $('pay').textContent=fd(n)+' · in '+d+'d '+String(h).padStart(2,'0')+'h '+String(m).padStart(2,'0')+'m'; $('paybar').style.width=(100-ms/P*100).toFixed(1)+'%'; } t(); setInterval(t,30000); })();
+(function(){ const A=Date.UTC(2026,8,18,17,0,0), P=14*864e5; function t(){ const now=Date.now(); let n=A; if(now>A) n=A+Math.ceil((now-A)/P)*P; const ms=n-now; const d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4); const txt=fd(n)+' · in '+d+'d '+String(h).padStart(2,'0')+'h '+String(m).padStart(2,'0')+'m'; $('pay').textContent=txt; $('pay2').textContent=txt; $('s-pay').textContent=d+'d '+String(h).padStart(2,'0')+'h'; $('s-pay').classList.remove('z'); const w=(100-ms/P*100).toFixed(1)+'%'; $('paybar').style.width=w; $('paybar2').style.width=w; } t(); setInterval(t,30000); })();
 
 /* sound: menu pad + blips */
 let ac=null,on=false,pad=null; const ctx=()=>{ try{ ac=ac||new (window.AudioContext||window.webkitAudioContext)(); if(ac.state==='suspended') ac.resume(); return ac; }catch(e){return null;} };
@@ -329,7 +343,7 @@ const GATE=(function(){ const bar=$('gbar'), pct=$('gpct'), log=$('glog'), btn=$
     while(si<steps.length && p>=steps[si][0]){ add(steps[si][1],steps[si][2],steps[si][3]); si++; }
     if(p<1) requestAnimationFrame(step); else { ready=true; G.setPose('idle'); G.setBreathe(true); $('gate').classList.add('flash'); add('npc ready','press ENTER'); btn.classList.add('on'); } }
   requestAnimationFrame(step);
-  function go(){ if(!ready||!document.body.classList.contains('gated')) return; $('gate').classList.add('out'); setTimeout(()=>{ try{ G.renderer.dispose(); G.renderer.forceContextLoss(); }catch(e){} $('gate').remove(); },700); document.body.classList.remove('gated'); document.body.classList.add('in'); N.resize(); C.resize(); try{ if(!on){ on=true; $('snd').setAttribute('aria-pressed','true'); $('snd').textContent='sound on'; startPad(); SFX.blip(); } }catch(e){} }
+  function go(){ if(!ready||!document.body.classList.contains('gated')) return; $('gate').classList.add('out'); setTimeout(()=>{ try{ G.renderer.dispose(); G.renderer.forceContextLoss(); }catch(e){} $('gate').remove(); },700); document.body.classList.remove('gated'); document.body.classList.add('in'); N.resize(); try{ if(!on){ on=true; $('snd').setAttribute('aria-pressed','true'); $('snd').textContent='sound on'; startPad(); SFX.blip(); } }catch(e){} }
   btn.addEventListener('click',go); return { go, get ready(){ return ready; } }; })();
 document.addEventListener('keydown',e=>{ if((e.key==='e'||e.key==='E'||e.key==='Enter') && document.body.classList.contains('gated')) GATE.go(); });
 
@@ -349,7 +363,7 @@ const FIRE=(function(){ const c=$('fire'), x=c.getContext('2d'); const W=c.width
   return { render, burst(){ for(let i=0;i<W;i++) buf[(H-2)*W+i]=36; } }; })();
 
 /* loop */
-let last=performance.now(); function loop(now){ requestAnimationFrame(loop); const dt=Math.min(.1,(now-last)/1000); last=now; if(document.visibilityState!=='visible') return; RAIN.render(dt); FIRE.render(dt); if(document.body.classList.contains('gated')){ G.render(dt); return; } N.render(dt); C.render(dt); } requestAnimationFrame(loop);
+let last=performance.now(); function loop(now){ requestAnimationFrame(loop); const dt=Math.min(.1,(now-last)/1000); last=now; if(document.visibilityState!=='visible') return; RAIN.render(dt); FIRE.render(dt); if(document.body.classList.contains('gated')){ G.render(dt); return; } N.render(dt); } requestAnimationFrame(loop);
 </script>
 </body>
 </html>
